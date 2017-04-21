@@ -1,0 +1,4 @@
+User-agent: *
+Disallow: 
+
+Sitemap: http://emottk.github.io/sitemap.xml 
