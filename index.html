@@ -1,85 +1,219 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <style>
-    body {
-      margin: 0;
-      padding: 20px;
-      font-family: "Times New Roman", Times, serif;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      background-color: #e6cfb3;
-    }
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-    .container {
-      flex: 1;
-      display: flex;
-      justify-content: space-between;
-      gap: 40px;
-    }
+        body {
+            background-color: #e6d5c3;
+            overflow-x: hidden;
+            position: relative;
+            min-height: 100vh;
+        }
 
-    .tagline {
-      font-size: 48px;
-      font-weight: bold;
-      max-width: 400px;
-      line-height: 1.2;
-    }
+        /* Updated navigation styles */
+        .nav-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            padding: 1rem 2rem;
+            z-index: 10;
+            background-color: rgba(230, 213, 195, 0.9);
+            backdrop-filter: blur(5px);
+            display: flex;
+            justify-content: flex-end;
+        }
 
-    .image-stack {
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
-      width: 400px;
-    }
+        .nav-link {
+            color: #1a1a1a;
+            text-decoration: none;
+            opacity: 0.8;
+            transition: opacity 0.2s ease;
+            display: flex;
+            align-items: center;
+        }
 
-    .image-stack img {
-      width: 100%;
-      height: 200px;
-      object-fit: cover;
-      border-radius: 8px;
-    }
+        .nav-link:hover {
+            opacity: 1;
+        }
 
-    .marquee {
-      margin-top: auto;
-      padding: 20px 0;
-      overflow: hidden;
-      white-space: nowrap;
-      /* background: #000; */
-      color: rgb(0, 0, 0);
-    }
+        .instagram-icon {
+            width: 20px;
+            height: 20px;
+        }
 
-    .marquee span {
-      display: inline-block;
-      animation: scroll 20s linear infinite;
-      padding-right: 50px;
-      font-size: 24px;
-      font-weight: bold;
-    }
+        /* Rest of the styles remain the same */
+        .grid-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            min-height: 100vh;
+            padding-bottom: 60px;
+            padding-top: 60px;
+        }
+        
+        .grid-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
 
-    @keyframes scroll {
-      0% {
-        transform: translateX(100%);
-      }
-      100% {
-        transform: translateX(-100%);
-      }
-    }
-  </style>
+        .header-container {
+            width: 100%;
+            max-width: 600px;
+        }
+
+        .header-wrap {
+            display: inline-block;
+            position: relative;
+        }
+
+        .main-header {
+            font-family: serif;
+            font-size: clamp(2rem, 6vw + 1rem, 4.5rem);
+            color: #1a1a1a;
+            font-weight: 900;
+            letter-spacing: -0.02em;
+            text-transform: lowercase;
+            display: inline-block;
+        }
+
+        .subtext {
+            font-family: serif;
+            font-size: clamp(1rem, 2vw + 0.5rem, 1.5rem);
+            color: #666;
+            font-style: italic;
+            letter-spacing: 0.05em;
+            position: absolute;
+            right: 0;
+            bottom: -1.5em;
+            white-space: nowrap;
+        }
+
+        .image-stack {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .image-stack img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+
+        .scroll-container {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: #e6d5c3;
+            padding: 1rem 0;
+            overflow: hidden;
+            border-top: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+        .scroll-text {
+            display: inline-block;
+            white-space: nowrap;
+            animation: scroll 20s linear infinite;
+            font-family: serif;
+            font-size: clamp(1rem, 2vw + 0.5rem, 1.5rem);
+            color: #1a1a1a;
+            letter-spacing: 0.05em;
+        }
+
+        .scroll-text span {
+            opacity: 0.7;
+            margin: 0 1rem;
+        }
+
+        @keyframes scroll {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        /* Texture overlay */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: url('data:image/png;base64,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');
+            opacity: 0.1;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        /* Add responsive design */
+        @media (max-width: 768px) {
+            .grid-container {
+                grid-template-columns: 1fr;
+            }
+
+            .grid-item {
+                padding: 1rem;
+            }
+
+            .image-stack {
+                margin-top: 2rem;
+            }
+
+            .nav-container {
+                padding: 1rem;
+            }
+        }
+    </style>
 </head>
 <body>
-  <div class="container">
-    <h4 class="tagline">in your borough, if you're thorough</h4>
-    <div class="image-stack">
-      <img src="/Users/emottk/workspace/dirtywater/emottk.github.io/assets/image1.jpeg" alt="Fresh bagels" />
-      <img src="/Users/emottk/workspace/dirtywater/emottk.github.io/assets/image3.jpeg" alt="Store interior" />
-      <img src="/Users/emottk/workspace/dirtywater/emottk.github.io/assets/image4.jpeg" alt="Bagel making process" />
+    <nav class="nav-container">
+        <a href="https://instagram.com/dirtywaterbagels" class="nav-link">
+            <svg class="instagram-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+            </svg>
+        </a>
+    </nav>
+
+    <div class="grid-container">
+        <div class="grid-item">
+            <div class="header-container">
+                <div class="header-wrap">
+                    <h1 class="main-header">in your borough</h1>
+                    <p class="subtext">if you're thorough</p>
+                </div>
+            </div>
+        </div>
+        <div class="grid-item">
+            <div class="image-stack">
+                <img src="/Users/emottk/workspace/dirtywater/emottk.github.io/assets/image1.jpeg" alt="Fresh bagels" />
+                <img src="/Users/emottk/workspace/dirtywater/emottk.github.io/assets/image3.jpeg" alt="Store interior" />
+                <img src="/Users/emottk/workspace/dirtywater/emottk.github.io/assets/image4.jpeg" alt="Bagel making process" />
+            </div>
+        </div>
     </div>
-  </div>
-  <div class="marquee">
-    <span>DIRTY WATER BAGELS • DIRTY WATER BAGELS • DIRTY WATER BAGELS • 
-        DIRTY WATER BAGELS • DIRTY WATER BAGELS • DIRTY WATER BAGELS • 
-        </span>
-  </div>
+    
+    <div class="scroll-container">
+        <div class="scroll-text">
+            DIRTY WATER BAGELS <span>•</span> DIRTY WATER BAGELS <span>•</span> 
+            DIRTY WATER BAGELS <span>•</span> DIRTY WATER BAGELS <span>•</span> 
+            DIRTY WATER BAGELS <span>•</span> DIRTY WATER BAGELS <span>•</span> 
+            DIRTY WATER BAGELS <span>•</span> DIRTY WATER BAGELS <span>•</span> 
+            DIRTY WATER BAGELS <span>•</span> DIRTY WATER BAGELS <span>•</span> 
+        </div>
+    </div>
 </body>
 </html>
